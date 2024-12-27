@@ -6,12 +6,11 @@ const menuItems = [
   { name: "Analytics", link: "/chart", icon: "ic:baseline-analytics" },
   {
     name: "Products",
-    link: "/",
+    link: "/products",
     icon: "material-symbols:production-quantity-limits-rounded",
   },
-  { name: "Category", link: "/", icon: "material-symbols:category" },
-  { name: "Users", link: "/", icon: "material-symbols:user-attributes" },
-  { name: "Settings", link: "/", icon: "material-symbols:logout" },
+  { name: "Category", link: "/categories", icon: "material-symbols:category" },
+  { name: "Users", link: "/users", icon: "material-symbols:user-attributes" },
 ];
 </script>
 
@@ -21,35 +20,33 @@ const menuItems = [
       <span class="logo-icon">⚡</span>
       <h2>Dash<span class="highlight">Board</span></h2>
     </div>
-    <nav>
-      <ul>
-        <RouterLink
-          :to="item.link"
-          :class="`menu-item ${{ active: item.name === 'Dashboard' }}`"
-          v-for="item in menuItems"
-          :key="item.name"
-        >
-          <span
-            ><Icon
-              :icon="item.icon"
-              width="20"
-              height="20"
-              style="margin-top: 5px"
-          /></span>
-          <p>{{ item.name }}</p>
-        </RouterLink>
-        <div :class="`menu-item ${{ active: item.name === 'Dashboard' }}`">
-          <span
-            ><Icon
-              icon="material-symbols:logout"
-              width="20"
-              height="20"
-              style="margin-top: 5px"
-          /></span>
-          <p>Logout</p>
-        </div>
-      </ul>
-    </nav>
+    <div>
+      <RouterLink
+        :to="item.link"
+        :class="`menu-item ${{ active: item.name === 'Dashboard' }}`"
+        v-for="item in menuItems"
+        :key="item.name"
+      >
+        <span
+          ><Icon
+            :icon="item.icon"
+            width="20"
+            height="20"
+            style="margin-top: 5px"
+        /></span>
+        <p>{{ item.name }}</p>
+      </RouterLink>
+      <div :class="`menu-item ${{ active: item?.name === 'Dashboard' }}`">
+        <span
+          ><Icon
+            icon="material-symbols:logout"
+            width="20"
+            height="20"
+            style="margin-top: 5px"
+        /></span>
+        <p>Logout</p>
+      </div>
+    </div>
   </aside>
 </template>
 
