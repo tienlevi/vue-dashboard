@@ -9,6 +9,19 @@ export const getProducts = async () => {
   }
 };
 
+export const getProductById = async (id) => {
+  try {
+    const response = await supabase
+      .from("products")
+      .select()
+      .eq("id", id)
+      .single();
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const addProduct = async (data) => {
   try {
     const response = await supabase.from("products").insert(data);

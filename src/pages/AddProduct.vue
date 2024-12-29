@@ -1,11 +1,11 @@
 <script setup>
-import { reactive } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import Button from "../components/ui/Button.vue";
 import Input from "../components/ui/Input.vue";
 import Select from "../components/ui/Select.vue";
 import { addProduct } from "../services/products";
-const data = reactive({
+const data = ref({
   name: "",
   price: 0,
   image: "",

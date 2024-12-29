@@ -50,7 +50,10 @@ onMounted(async () => {
             children="Delete"
             style="width: 100px; height: 45px"
           />
-          <RouterLink style="text-decoration: none">
+          <RouterLink
+            :to="`/products/edit/${item.id}`"
+            style="text-decoration: none"
+          >
             <Button children="Edit" style="width: 100px; height: 45px" />
           </RouterLink>
         </td>
