@@ -1,14 +1,31 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import { getProducts } from "../services/products";
+import { RouterLink } from "vue-router";
+import { deleteProduct, getProducts } from "../services/products";
+import Button from "../components/ui/Button.vue";
 const data = ref([]);
+
+const handleDelete = async (id) => {
+  if (confirm("Are sure want to delete ?")) {
+    const newData = data.value.filter((item) => item.id !== id);
+    data.value = newData;
+    const response = await deleteProduct(id);
+    return response;
+  }
+};
+
 onMounted(async () => {
   const response = await getProducts();
   data.value = response;
-  console.log(data.value);
 });
 </script>
 <template>
+  <RouterLink
+    to="/products/add"
+    style="text-decoration: none; margin-bottom: 10px; float: right"
+  >
+    <Button children="Add" style="width: 100px; height: 45px" />
+  </RouterLink>
   <table>
     <thead>
       <tr>
@@ -17,6 +34,7 @@ onMounted(async () => {
         <th>Price (VND)</th>
         <th>Image</th>
         <th>Category</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody>
@@ -26,6 +44,16 @@ onMounted(async () => {
         <td>{{ item.price }}</td>
         <td><img :src="item.image" alt="" /></td>
         <td>{{ item.category }}</td>
+        <td style="display: flex; align-items: center; gap: 10px">
+          <Button
+            @click="handleDelete(item.id)"
+            children="Delete"
+            style="width: 100px; height: 45px"
+          />
+          <RouterLink style="text-decoration: none">
+            <Button children="Edit" style="width: 100px; height: 45px" />
+          </RouterLink>
+        </td>
       </tr>
     </tbody>
   </table>
