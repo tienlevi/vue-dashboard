@@ -4,12 +4,14 @@ import { RouterLink } from "vue-router";
 import { deleteProduct, getProducts } from "../services/products";
 import Button from "../components/ui/Button.vue";
 import { imageUrl } from "../utils/storage";
-const data = ref([]);
+import { getCategories } from "../services/category";
 
+const products = ref([]);
+const categories = ref([]);
 const handleDelete = async (id) => {
   if (confirm("Are sure want to delete ?")) {
-    const newData = data.value.filter((item) => item.id !== id);
-    data.value = newData;
+    const newData = products.value.filter((item) => item.id !== id);
+    products.value = newData;
     const response = await deleteProduct(id);
     return response;
   }
@@ -17,7 +19,12 @@ const handleDelete = async (id) => {
 
 onMounted(async () => {
   const response = await getProducts();
-  data.value = response;
+  products.value = response;
+});
+
+onMounted(async () => {
+  const response = await getCategories();
+  categories.value = response;
 });
 </script>
 <template>
@@ -39,7 +46,7 @@ onMounted(async () => {
       </tr>
     </thead>
     <tbody>
-      <tr v-for="item in data">
+      <tr v-for="item in products">
         <td>{{ item.id }}</td>
         <td>{{ item.name }}</td>
         <td>{{ item.price }}</td>
@@ -50,7 +57,11 @@ onMounted(async () => {
             style="width: 100px; height: 100px"
           />
         </td>
-        <td>{{ item.category }}</td>
+        <td>
+          {{
+            categories.find((category) => category.id === item.category)?.name
+          }}
+        </td>
         <td style="display: grid; gap: 10px">
           <Button
             @click="handleDelete(item.id)"

@@ -1,17 +1,20 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import Button from "../components/ui/Button.vue";
 import Input from "../components/ui/Input.vue";
 import Select from "../components/ui/Select.vue";
 import { addProduct } from "../services/products";
-import { imageUrl, uploadFile } from "../utils/storage";
+import { uploadFile } from "../utils/storage";
+import { getCategories } from "../services/category";
 
 const data = ref({
   name: "",
   price: 0,
   image: "",
+  category: "",
 });
+const categories = ref([]);
 const file = ref(null);
 const loading = ref(false);
 const fileUrl = ref("");
@@ -44,6 +47,11 @@ const onSubmit = async () => {
     loading.value = false;
   }
 };
+
+onMounted(async () => {
+  const response = await getCategories();
+  categories.value = response;
+});
 </script>
 <template>
   <h1>Add Product</h1>
@@ -64,11 +72,16 @@ const onSubmit = async () => {
     />
     <Input style="margin-bottom: 20px" type="file" @change="handleChangeFile" />
     <img
-      :src="fileUrl ? fileUrl : imageUrl(data.image)"
+      v-if="fileUrl"
+      :src="fileUrl"
       alt=""
-      style="width: 200px; height: 200px"
+      style="width: 200px; height: 200px; margin-bottom: 20px"
     />
-    <Select />
+    <Select
+      :listOptions="categories"
+      v-model="data.category"
+      style="margin-bottom: 20px"
+    />
     <Button
       v-if="loading === true"
       :disable="loading"

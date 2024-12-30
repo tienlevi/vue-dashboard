@@ -1,13 +1,31 @@
-<script setup></script>
+<script setup>
+const { listOptions, selectId } = defineProps(["listOptions", "selectId"]);
+
+const emit = defineEmits(["update:modelValue"]);
+console.log(selectId);
+
+const onChange = (event) => {
+  emit("update:modelValue", event.target.value);
+};
+</script>
 
 <template>
   <div class="select-wrapper">
-    <select class="custom-select">
-      <option value="" disabled selected>Select an option</option>
-      <option value="1">Option 1</option>
-      <option value="2">Option 2</option>
-      <option value="3">Option 3</option>
-      <option value="4">Option 4</option>
+    <select @change="onChange" class="custom-select">
+      <option
+        value=""
+        disabled
+        :selected="selectId === undefined || selectId === null"
+      >
+        Select an option
+      </option>
+      <option
+        v-for="item in listOptions"
+        :value="item.id"
+        :selected="item.id === selectId ? true : false"
+      >
+        {{ item.name }}
+      </option>
     </select>
   </div>
 </template>

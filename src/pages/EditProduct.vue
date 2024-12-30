@@ -6,11 +6,16 @@ import Input from "../components/ui/Input.vue";
 import Select from "../components/ui/Select.vue";
 import { editProduct, getProductById } from "../services/products";
 import { imageUrl, uploadFile } from "../utils/storage";
+import { getCategories } from "../services/category";
+
 const data = ref({
   name: "",
   price: 0,
   image: "",
+  category: "",
 });
+
+const categories = ref([]);
 const route = useRoute();
 const router = useRouter();
 const file = ref(null);
@@ -49,6 +54,11 @@ onMounted(async () => {
   const response = await getProductById(route.params.id);
   data.value = response;
 });
+
+onMounted(async () => {
+  const response = await getCategories();
+  categories.value = response;
+});
 </script>
 <template>
   <h1>Edit Product</h1>
@@ -73,7 +83,12 @@ onMounted(async () => {
       alt=""
       style="width: 200px; height: 200px"
     />
-    <Select />
+    <Select
+      :selectId="data.category"
+      :listOptions="categories"
+      v-model="data.category"
+      style="margin-bottom: 20px"
+    />
     <Button
       v-if="loading === true"
       :disable="loading"
