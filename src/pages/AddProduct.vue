@@ -15,7 +15,6 @@ const data = ref({
 const file = ref(null);
 const loading = ref(false);
 const fileUrl = ref("");
-const loading = ref(false);
 const router = useRouter();
 
 const handleChangeFile = (event) => {
