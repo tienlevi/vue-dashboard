@@ -5,21 +5,45 @@ import Button from "../components/ui/Button.vue";
 import Input from "../components/ui/Input.vue";
 import Select from "../components/ui/Select.vue";
 import { addProduct } from "../services/products";
+import { imageUrl, uploadFile } from "../utils/storage";
+
 const data = ref({
   name: "",
   price: 0,
   image: "",
 });
+const file = ref(null);
+const loading = ref(false);
+const file = ref(null);
+const fileUrl = ref("");
+const loading = ref(false);
 const router = useRouter();
+
+const handleChangeFile = (event) => {
+  const selectedFile = event.target.files[0];
+  const reader = new FileReader();
+  reader.onload = () => {
+    file.value = selectedFile;
+    fileUrl.value = reader.result;
+  };
+  reader.readAsDataURL(selectedFile);
+};
 
 const onSubmit = async () => {
   try {
-    const response = await addProduct(data);
+    loading.value = true;
+    const image = await uploadFile(file.value);
+    const response = await addProduct({
+      ...data.value,
+      image: image.data.fullPath,
+    });
     alert("Add Success");
     router.push("/products");
     return response;
   } catch (error) {
     console.log(error);
+  } finally {
+    loading.value = false;
   }
 };
 </script>
@@ -39,15 +63,21 @@ const onSubmit = async () => {
       placeholder="Price"
       type="number"
     />
-    <Input
-      style="margin-bottom: 20px"
-      v-model="data.image"
-      :value="data.image"
-      placeholder="Image"
-      type="text"
+    <Input style="margin-bottom: 20px" type="file" @change="handleChangeFile" />
+    <img
+      :src="fileUrl ? fileUrl : imageUrl(data.image)"
+      alt=""
+      style="width: 200px; height: 200px"
     />
     <Select />
     <Button
+      v-if="loading === true"
+      :disable="loading"
+      children="Loading..."
+      style="width: 200px; height: 45px"
+    />
+    <Button
+      v-else="loading === false"
       children="Submit"
       type="submit"
       style="width: 200px; height: 45px"

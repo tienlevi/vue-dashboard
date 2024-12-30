@@ -3,6 +3,7 @@ import { onMounted, ref } from "vue";
 import { RouterLink } from "vue-router";
 import { deleteProduct, getProducts } from "../services/products";
 import Button from "../components/ui/Button.vue";
+import { imageUrl } from "../utils/storage";
 const data = ref([]);
 
 const handleDelete = async (id) => {
@@ -42,9 +43,15 @@ onMounted(async () => {
         <td>{{ item.id }}</td>
         <td>{{ item.name }}</td>
         <td>{{ item.price }}</td>
-        <td><img :src="item.image" alt="" /></td>
+        <td>
+          <img
+            :src="imageUrl(item.image)"
+            alt=""
+            style="width: 100px; height: 100px"
+          />
+        </td>
         <td>{{ item.category }}</td>
-        <td style="display: flex; align-items: center; gap: 10px">
+        <td style="display: grid; gap: 10px">
           <Button
             @click="handleDelete(item.id)"
             children="Delete"
