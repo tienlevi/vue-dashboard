@@ -14,7 +14,6 @@ const data = ref({
 });
 const file = ref(null);
 const loading = ref(false);
-const file = ref(null);
 const fileUrl = ref("");
 const loading = ref(false);
 const router = useRouter();
