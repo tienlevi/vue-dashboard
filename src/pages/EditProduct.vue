@@ -51,6 +51,7 @@ onMounted(async () => {
 });
 </script>
 <template>
+  <h1>Edit Product</h1>
   <form @submit.prevent="onSubmit" class="form-edit">
     <Input
       style="margin-bottom: 20px"

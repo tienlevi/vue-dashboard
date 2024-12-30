@@ -46,6 +46,7 @@ const onSubmit = async () => {
 };
 </script>
 <template>
+  <h1>Add Product</h1>
   <form @submit.prevent="onSubmit" class="form-add">
     <Input
       style="margin-bottom: 20px"
